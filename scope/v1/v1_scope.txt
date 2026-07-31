@@ -1,0 +1,9 @@
+
+
+Version 1 Scope for The Red Queen:
+
+	1. Pull Option pricing from yFinance and use the Black-Scholes, Black-76, and Bachelier to determine the greeks. Maybe then compare this with the greeks from different investment banks and see how close I got to the real thing.
+
+	2. Take the forecasts from forecasts.org and have a section of graphed forecasts.
+
+	3. Create a cool looking front-end for this.
