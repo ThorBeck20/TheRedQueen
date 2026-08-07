@@ -6,7 +6,7 @@ import yfinance as yf;
 import pandas as pd;
 import numpy as np;
 
-def get_expected_constant_growth_rate(dividends, num_dividends) -> float:
+def get_expected_constant_growth_rate(dividends, num__yearly_dividends) -> float:
 	"""
 	Calculate the expected constant growth rate of dividends based on the provided dividends.
 	Assumes that there are no outliers in the dividend data.
@@ -14,12 +14,12 @@ def get_expected_constant_growth_rate(dividends, num_dividends) -> float:
 	Parameters:
 	dividends : pd.Series
 		A pandas Series containing dividend values.
-	num_dividends : int
+	num_yearly_dividends : int
 		The number of yearly dividends (1, 2, or 4).
 
 	Returns:
 	float
-		The expected constant growth rate of dividends.
+		The expected constant growth rate of dividends as an average of the last 5 years.
 	"""
 	if dividends.empty:
 		return 0.0
@@ -28,8 +28,21 @@ def get_expected_constant_growth_rate(dividends, num_dividends) -> float:
 			print("Not enough dividend data to calculate growth rate.")
 			return 0.0
 
-		
+		# Take out this year as it is incomplete and will skew the growth rate.
+		for indx, d in dividends.items():
+			if indx.date().year == datetime.now().year:
+				dividends = dividends.drop(indx)
 
+		# Calculate the yearly dividends by summing the dividends for each year.
+		yearly_dividends = dividends.groupby(dividends.index.year).sum().sort_index(ascending=True)
+		# print(f"Yearly Dividends: {yearly_dividends}")
+
+		# Calculate the growth rates for each year.
+		dividend_growth_rates = yearly_dividends.diff()
+
+		last_five_years_growth_rates = dividend_growth_rates[-5:]
+		print(f"Dividend Growth Rates: {last_five_years_growth_rates}\n")
+		return last_five_years_growth_rates.mean()
 
 def get_annualized_dividends(dividends) -> tuple[float, float]:
 	"""
@@ -57,7 +70,7 @@ def get_annualized_dividends(dividends) -> tuple[float, float]:
 			if indx.date().year == last_year:
 				last_years_dividends.append({"date": indx, "dividend": d})
 		num_dividends = len(last_years_dividends)
-		print(f"Last Year's Dividends: {last_years_dividends}\nNum Dividends: {num_dividends}")
+		# print(f"Last Year's Dividends: {last_years_dividends}\nNum Dividends: {num_dividends}")
 
 		'''
 			Get the ttm by getting the last num dividends. Done this way because dividends aren't given on the same day each year, 
@@ -70,23 +83,23 @@ def get_annualized_dividends(dividends) -> tuple[float, float]:
 		ttm_dividends = 0.0
 		if (num_dividends == 4):
 			ttm_dividends = dividends.iloc[-4:].sum()
-			print(f"Trailing Twelve Months Dividends (Quarterly): {ttm_dividends}")
+			print(f"Trailing Twelve Months Dividends (Quarterly): {ttm_dividends}\n")
 			return (num_dividends, ttm_dividends)
 		
 		elif (num_dividends == 1):
 			ttm_dividends = dividends.iloc[-1]
-			print(f"Trailing Twelve Months Dividends (Annual): {ttm_dividends}")
+			print(f"Trailing Twelve Months Dividends (Annual): {ttm_dividends}\n")
 			return (num_dividends, ttm_dividends)
 		
 		elif (num_dividends == 2):
 			ttm_dividends = dividends.iloc[-2:].sum()
-			print(f"Trailing Twelve Months Dividends (Bi-annual): {ttm_dividends}")
+			print(f"Trailing Twelve Months Dividends (Bi-annual): {ttm_dividends}\n")
 			return (num_dividends, ttm_dividends)
 
 		else:
-			print(f"Unexpected number of dividends found: {num_dividends}.")
+			print(f"Unexpected number of dividends found: {num_dividends}.\n")
 			ttm_dividends = dividends.iloc[-4:].sum()
-			print(f"Trailing Twelve Months Dividends (Assumed Quarterly): {ttm_dividends}")
+			print(f"Trailing Twelve Months Dividends (Assumed Quarterly): {ttm_dividends}\n")
 			return (-1, ttm_dividends)
 
 def gordon_growth_model(ticker, ke):
@@ -116,14 +129,20 @@ def gordon_growth_model(ticker, ke):
 		p1 = data.get_analyst_price_targets().get('median')
 
 		dividends = data.get_dividends()
-		annualized_dividends = get_annualized_dividends(dividends)[1]
-		d = annualized_dividends[1]
-		growth_rate = get_expected_constant_growth_rate(dividends, annualized_dividends[0])
+		annualized_div_tuple = get_annualized_dividends(dividends)
+		print(f"Current Price: {p0}, Analyst Price Target: {p1}\n")
+		num_annual_dividends = annualized_div_tuple[0]
+		# print(f"Dividends expected each year: {num_annual_dividends}\n")
+		g = get_expected_constant_growth_rate(dividends, annualized_div_tuple[0])
 
 		start_date = datetime(datetime.now().year-1, 1, 1)
 		dividends_last_year = dividends[dividends.index.year >= start_date.date().year]
-		print(f"Dividends last year: {dividends_last_year}")
-		
+		# print(f"Dividends last year: {dividends_last_year}")
+
+		d = annualized_div_tuple[1]
+
+		print(f"Expected Growth Rate: {g}, Dividend Expected Next Period: {d}, Required Rate of Return: {ke}\n")
+		print(f"Theoretical Stock Price: {(p1 + d) / (1 + ke)}\n")
 
 		return (p1 + d) / (1 + ke)
 	else:
