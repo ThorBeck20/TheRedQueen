@@ -1,1 +1,12 @@
 /pythonTestingVenv/venv/
+
+# Dependencies
+/TRQ-frontend/node_modules/
+
+# Build outputs
+/TRQ-frontend/build/
+/TRQ-frontend/dist/
+
+# Backend Venv
+/Backend/venv/
+
