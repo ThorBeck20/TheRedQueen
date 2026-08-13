@@ -1,4 +1,3 @@
-from fredapi import Fred
 import httpx
 from core.config import settings
 
@@ -8,9 +7,6 @@ from core.config import settings
       "This product uses the FRED® API but is not endorsed or certified by the
       Federal Reserve Bank of St. Louis."
 '''
-
-
-fred = Fred(api_key=settings.FRED_API_KEY)
 
 
 async def get_series(series_id: str):
@@ -42,8 +38,8 @@ async def get_series(series_id: str):
 
 async def get_series_observations(
         series_id: str,
-        observation_start="9999-12-31",
-        observation_end="1776-07-04",
+        observation_start="1776-07-04",
+        observation_end="9999-12-31",
         frequency="d",
         units="lin"
         ):
@@ -61,9 +57,9 @@ async def get_series_observations(
     Parameters:
         series_id (str): The ID of the series to retrieve.
         observation_start (str): The start of the observation.
-            - Format: "YYYY-MM-DD" (Default: 9999-12-31)
-        observation_end (str): The end of the observation.
             - Format: "YYYY-MM-DD" (Default: 1776-07-04)
+        observation_end (str): The end of the observation.
+            - Format: "YYYY-MM-DD" (Default: 9999-12-31)
         frequency (str): The frequency of the series.
         units (str): The units of the series. (E.g. percent, log, levels, etc.)
 

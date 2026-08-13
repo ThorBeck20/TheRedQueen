@@ -1,11 +1,11 @@
-from fastAPI import APIRouter  # type: ignore
+from fastapi import APIRouter
 from services.fred_bonds import get_series, get_series_observations
 
 router = APIRouter(prefix="/bonds", tags=["bonds"])
 
 
 @router.get("/series/{series_id}")
-def series(
+async def series(
     series_id: str,
     ob_start: str,
     ob_end: str,
@@ -33,8 +33,8 @@ def series(
 
     '''
 
-    series_headers = get_series(series_id)
-    series_data = get_series_observations(
+    series_headers = await get_series(series_id)
+    series_data = await get_series_observations(
         series_id,
         ob_start,
         ob_end,
