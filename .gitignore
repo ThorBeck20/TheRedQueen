@@ -10,3 +10,6 @@
 # Backend Venv
 /Backend/venv/
 
+# Backend config file
+/Backend/core/config.py
+
