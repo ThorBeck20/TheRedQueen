@@ -1,27 +1,18 @@
-import { useState, useEffect } from 'react';
-import ChartContainer from './components/ChartContainer';
+import { Outlet } from 'react-router-dom';
+import Navbar from './components/NavBar';
 import './App.css';
 
-  // var test_seriesX = Array.from({length: 50}, (_,i) => i)
-  // var test_seriesY = Array.from({length: 50}, () => Math.random() * 50)
 
 function App() {
-
-
   return (
     <>
+      <div>
+        <Navbar />
+      </div>
       <section id="center">
         <div>
-          { 
-            <ChartContainer />
-          }
+          <Outlet />
         </div>
-        <ul>
-          {/* {data.map(d => (
-            <li key={d}></li>
-          ))} */}
-        </ul>
-
       </section>
     </>
   )
