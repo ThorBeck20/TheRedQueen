@@ -12,4 +12,11 @@
 
 # Backend env file
 /Backend/core/.env
+/Backend/.env
+
+# VS code debug launch.json file
+/.vscode/launch.json
+
+# Testing series return file
+/Backend/series_1.json
 

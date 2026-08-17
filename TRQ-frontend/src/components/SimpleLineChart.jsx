@@ -10,7 +10,7 @@ const Page = ({seriesX, seriesY, title, width, height}) => {
             text: title,
             left: "center",
             textStyle: {
-                fontSize: 30,
+                fontSize: 20,
                 fontWeight: 'bolder'
             },
             padding: 0,
@@ -25,12 +25,18 @@ const Page = ({seriesX, seriesY, title, width, height}) => {
             opacity: 1,
             show: true
         },
-        xAxis: { type: 'value' },
+        xAxis: { type: 'category', data: seriesX },
         yAxis: { type: 'value' },
+        dataset: {
+            source: [
+
+            ]
+        },
         series: [
             {
-                data: seriesX.map((x, i) => [x, seriesY[i]]),
                 type: 'line',
+                data: seriesY
+                // data: seriesX.map((x, i) => [x, seriesY[i]]),
             }
         ],
         tooltip: {

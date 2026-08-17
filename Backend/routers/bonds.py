@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from services.fred_bonds import get_series, get_series_observations
 
+
 router = APIRouter(prefix="/bonds", tags=["bonds"])
 
 
@@ -14,6 +15,7 @@ async def series(
 ):
     '''
     TODO: Make sure to protect these strings from string injection attacks.
+    TODO: Add validation to the backend so that only verified frontends can connect?
 
     Takes the series ID, and retrieves the series headers, and data and returns
     a compiled json dict with both of them.
@@ -46,5 +48,6 @@ async def series(
         "headers": series_headers,
         "data": series_data
     }
+
 
     return full_series
