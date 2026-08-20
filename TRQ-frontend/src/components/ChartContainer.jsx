@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SimpleLineChart from './SimpleLineChart';
-import './ChartContainer.css';
+import { Input } from './Input';
 import axios from 'axios';
 
 
@@ -47,42 +47,39 @@ function ChartContainer() {
         });
     }
 
-    // Set content to something while 
+    // Set content to something while loading
 
     return (
     <>
-        <div>
+        <div className="flex flex-col bg-surface-raised p-4 m-2 rounded-lg">
             <>
-                <p>Series ID:</p>
-                <input
+                <h2>FRED Series ID:</h2>
+                <Input
+                    className="input m-2"
+                    label="test"
                     type="text"
                     onChange={(e) => setSeriesId(e.target.value)}
                     defaultValue={'DGS1MO'}
                 />
             </>
-            <>
-                <p>
-                    Observation Start Date:
-                </p>
-                <input
-                    className="input"
+            <div className="flex flex-row justify-center">
+                <Input
+                    className="input m-2"
                     type="text"
                     onChange={(e) => setObStart(e.target.value)}
                     defaultValue={'YYYY-MM-DD'}
                 />
-            </>
-            <>
-                <p>
-                    Observation End Date:
-                </p>
-                <input
+                <p>to</p>
+                <Input
+                    className="input m-2"
                     type="text"
                     onChange={(e) => setObEnd(e.target.value)}
                     defaultValue={'YYYY-MM-DD'}
                 />
-            </>
-            <div>
-                <button onClick={() => handleRequest(seriesId, obStart, obEnd)}>Submit</button>
+                <button
+                    className="bg-accent px-8 rounded-lg shadow-xl"
+                    onClick={() => handleRequest(seriesId, obStart, obEnd)}
+                >Submit</button>
             </div>
         </div>
         <div>
