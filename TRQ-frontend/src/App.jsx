@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
   return (
-    <>
+    <div className='bg-surface'>
       <div>
         <Navbar />
       </div>
@@ -14,7 +14,7 @@ function App() {
           <Outlet />
         </div>
       </section>
-    </>
+    </div>
   )
 }
 
