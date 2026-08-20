@@ -1,10 +1,12 @@
 import ReactECharts from 'echarts-for-react';
 
+/**
+ * TODO: Transition to dataset once I have more experience.
+ * TODO: Implement the dataZoom.
+ * 
+ * 
+ */
 const Page = ({seriesX, seriesY, title, width, height}) => {
-    /*
-        Transition to dateset once I have more experince with this library.
-
-    */
     const options = {
         title: {
             text: title,
@@ -21,7 +23,7 @@ const Page = ({seriesX, seriesY, title, width, height}) => {
             right: 36,
             bottom: 36,
             left: 36,
-            backgroundcolor: 'rgb(219, 10, 10)',
+            backgroundcolor: '',
             opacity: 1,
             show: true
         },

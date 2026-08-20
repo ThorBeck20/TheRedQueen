@@ -1,4 +1,4 @@
-export function Input({ label, error, className='', ...props}) {
+export function Input({ label, className='', ...props}) {
     return (
         <div className="flex flex-col gap-1">
             {label && (
@@ -9,14 +9,10 @@ export function Input({ label, error, className='', ...props}) {
                     text-text-primary placeholder:text-text-secondary
                     outline-none transition-colors focus: ring-2
                     focus: ring-accent focus:border-accent disabled:opacity-50
-                    disabled:cursor-not-allowed 
-                    ${error ? 'border-danger' : 'border-border'} ${className}
+                    disabled:cursor-not-allowed ${className}
                 `}
                 {...props}
             />
-            {error && (
-                <span className="text-sm text-danger">{error}</span>
-            )}
         </div>
     )
 }

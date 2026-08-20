@@ -1,4 +1,4 @@
-import ChartContainer from "../ChartContainer";
+import ChartContainer from "../ChartComponents/ChartContainer";
 
 
 function Bonds() {
