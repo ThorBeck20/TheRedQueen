@@ -4,6 +4,9 @@
  * 
  * This function is designed to quickly change the timeframe of a chart.
  * 
+ * TODO: Visually indicate the selected state.
+ * TODO: Do some base styling
+ * 
  *  @param {Object} props
  *  @param {string} [props.className] - Additional classes merged into props.
  *  @param { 'one_month' | 'one_year' | 'five_year' | 'ten_year' | 'max'} [prop.variant="one_year"] - Which timeframe this button represents.

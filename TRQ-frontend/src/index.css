@@ -18,6 +18,7 @@
 
 :root {
   --color-surface: #F3F3F3;
+  --color-surface-hover: #B6b6b6;
   --color-surface-raised: #DECBC8;  /* #D0B5B1; */
   --color-text-primary: #332c2c;
   --color-text-secondary: #;
@@ -30,6 +31,7 @@
 
 .dark {
   --color-surface: #332c2c;
+  --color-surface-hover: #706b6b;
   --color-surface-raised: #554342;
   --color-text-primary: #F3F3F3;
   --color-text-secondary: #;
@@ -42,6 +44,7 @@
 
 @theme inline {
   --color-surface: var(--color-surface);
+  --color-surface-hover: var(--color-surface-hover);
   --color-surface-raised: var(--color-surface-raised);
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
@@ -52,12 +55,21 @@
   --color-accent: var(--color-accent);
 }
 
+.theme-transition {
+  transition: 
+    background-color 500ms ease,
+    border-color 500ms ease,
+    color 500ms ease,
+    text 500ms ease
+
+}
+
 :root {
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Andada pro', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Tienne', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -67,6 +79,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 

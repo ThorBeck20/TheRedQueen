@@ -51,7 +51,7 @@ function ChartContainer() {
     // Set content to something while loading
 
     return (
-    <div className="flex flex-col bg-surface-raised p-4 m-2 rounded-lg">
+    <div className="flex flex-col bg-surface-raised p-4 m-2 rounded-lg theme-transition">
         <div className="flex flex-col justify-center">
             <>
                 

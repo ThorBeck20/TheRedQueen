@@ -9,6 +9,7 @@ export function Input({ label, className='', ...props}) {
                     text-text-primary placeholder:text-text-secondary
                     outline-none transition-colors focus: ring-2
                     focus: ring-accent focus:border-accent disabled:opacity-50
+                    theme-transition
                     disabled:cursor-not-allowed ${className}
                 `}
                 {...props}

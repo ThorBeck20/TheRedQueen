@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from './components/NavBar';
+import Navbar from './components/Navbar/Navbar';
 import './App.css';
 
 
 function App() {
   return (
-    <div className='bg-surface'>
+    <div className='bg-surface h-screen theme-transition'>
       <div>
         <Navbar />
       </div>
