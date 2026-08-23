@@ -18,6 +18,8 @@ function Navbar() {
                     <nav className="flex flex-row gap-1 mx-2 h-15">
                         <NavbarLink to="/" >Home</NavbarLink>
                         <NavbarLink to="/Bonds">Bonds</NavbarLink>
+                        <NavbarLink to="/Stocks">Stocks</NavbarLink>
+                        <NavbarLink to="/Options">Options</NavbarLink>
                     </nav>
                 </div>
                 <div className="

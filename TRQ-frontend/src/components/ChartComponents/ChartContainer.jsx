@@ -7,7 +7,9 @@ import QuickDateChangeButton from './QuickDateChangeButton';
 
 function ChartContainer() {
     /*
-        Make sure to validate text! Maybe switch to a calendar picker?
+        TODO: Make sure to validate text! Maybe switch to a calendar picker?
+        TODO: Have a way to download the dataset as a .xlsx and maybe include
+        some pages that have frequently used equations.
     */
     const [seriesId, setSeriesId] = useState("DGS1MO");
     const [obStart, setObStart] = useState("1776-07-04");
