@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import SimpleLineChart from './SimpleLineChart';
+import { useState, useRef } from 'react';
+import ReactECharts from 'echarts-for-react';
 import { Input } from './Input';
 import axios from 'axios';
 import QuickDateChangeButton from './QuickDateChangeButton';
@@ -16,7 +16,59 @@ function ChartContainer() {
     const [obEnd, setObEnd] = useState("9999-12-31");
 
     const [data, setData] = useState([]);
-    const [content, setContent] = useState();
+    const [dates, setDates] = useState([]);
+    const [values, setValues] = useState([]);
+    const [title, setTitle] = useState("");
+    const [hasData, setHasData] = useState(false);
+
+    const chartRef = useRef(null);
+
+    const options = {
+        dataZoom: [
+            {
+                id: 'dataZoomX',
+                type: 'inside',
+                xAxisIndex: [0],
+                filterMode: 'filter',
+            },
+        ],
+        title: {
+            text: title,
+            left: "center",
+            textStyle: {
+                fontSize: 20,
+                fontWeight: 'bolder'
+            },
+            padding: 0,
+            color: ""
+        },
+        grid: {
+            top: 60,
+            right: 36,
+            bottom: 36,
+            left: 36,
+            backgroundcolor: '',
+            opacity: 1,
+            show: true
+        },
+        xAxis: { type: 'category', data: dates },
+        yAxis: { type: 'value' },
+        dataset: {
+            source: [
+
+            ]
+        },
+        series: [
+            {
+                type: 'line',
+                data: values,
+                // data: seriesX.map((x, i) => [x, seriesY[i]]),
+            }
+        ],
+        tooltip: {
+            trigger: 'axis'
+        }
+    };
 
     const handleRequest = async(series_id, obStart, obEnd) => {
         axios.get(`http://localhost:8000/bonds/series/${series_id}`, {
@@ -35,15 +87,11 @@ function ChartContainer() {
             const dates = response.data.data.observations.map(obs => obs.date)
             const values = response.data.data.observations.map(obs => obs.value)
 
-            setContent(
-                <SimpleLineChart
-                    seriesX={dates}
-                    seriesY={values}
-                    title={response.data.headers.seriess.title}
-                    width={500}
-                    height={500}
-                />
-            );
+            setDates(dates);
+            setValues(values);
+            setTitle(response.data.headers.seriess.title);
+
+            setHasData(true);
         })
         .catch(error => {
             console.error(error);
@@ -81,11 +129,11 @@ function ChartContainer() {
                     defaultValue={'YYYY-MM-DD'}
                 />
                 <div className="flex flex-row gap-2">
-                    <QuickDateChangeButton variant="one_month"/>
-                    <QuickDateChangeButton variant="one_year"/>
-                    <QuickDateChangeButton variant="five_year"/>
-                    <QuickDateChangeButton variant="ten_year"/>
-                    <QuickDateChangeButton variant="max"/>
+                    <QuickDateChangeButton variant="one_month" chartRef={chartRef}/>
+                    <QuickDateChangeButton variant="one_year" chartRef={chartRef}/>
+                    <QuickDateChangeButton variant="five_year" chartRef={chartRef}/>
+                    <QuickDateChangeButton variant="ten_year" chartRef={chartRef}/>
+                    <QuickDateChangeButton variant="max" chartRef={chartRef}/>
                 </div>
                 
             </div>
@@ -96,9 +144,13 @@ function ChartContainer() {
                 >Submit</button>
             </div>
         </div>
-        <div className="min-w-4/5">
-            {data &&
-                content
+        <div className="flex justify-center minw-4/5">
+            {hasData &&
+                <ReactECharts
+                    ref={chartRef}
+                    option={options}
+                    style={{width: "100%", height: "500px"}}
+                />
             }
         </div>
     </div>
