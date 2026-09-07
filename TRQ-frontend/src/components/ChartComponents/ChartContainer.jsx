@@ -4,6 +4,16 @@ import { Input } from './Input';
 import axios from 'axios';
 import QuickDateChangeButton from './QuickDateChangeButton';
 
+function getTheme(varName) {
+    const style = getComputedStyle(document.documentElement)
+        .getPropertyValue(varName)
+        .trim();
+    if(!style) {
+        console.warn(`Theme color ${varName} is not defined.`);
+    }
+    console.log(`Theme color is: ${style}`);
+    return style;
+}
 
 function ChartContainer() {
     /*
@@ -23,6 +33,8 @@ function ChartContainer() {
 
     const chartRef = useRef(null);
 
+    const textColor = getTheme('--color-text-primary');
+
     const options = {
         dataZoom: [
             {
@@ -33,14 +45,15 @@ function ChartContainer() {
             },
         ],
         title: {
-            text: title,
+            text: "test",
             left: "center",
             textStyle: {
                 fontSize: 20,
-                fontWeight: 'bolder'
+                fontWeight: 'normal',
+                fontFamily: getTheme('--text-font'),
+                color: textColor
             },
-            padding: 0,
-            color: ""
+            padding: 5,
         },
         grid: {
             top: 60,
@@ -49,24 +62,70 @@ function ChartContainer() {
             left: 36,
             backgroundcolor: '',
             opacity: 1,
-            show: true
+            borderWidth: 1,
+            borderColor: getTheme('--border'),
+            show: true,
+            coordinateSystem: 'cartesian2d',
         },
-        xAxis: { type: 'category', data: dates },
-        yAxis: { type: 'value' },
-        dataset: {
-            source: [
+        xAxis: {
+            type: 'time',
+            name: '',
+            nameLocation: 'middle',
+            nameGap: 30,
+            axisLine: {
+                lineStyle: {
+                    color: '',
+                },
+            },
+            axisLabel: {
+                color: textColor,
+            },
+            axispointer: {
+                show: true,
+                snap: true,
+                label: {
+                    show: true,
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: 'Percent (%)',
+            nameLocation: 'middle',
+            nameGap: 30,
+            nameTextStyle: {
+                fontSize: 14,
+                fontWeight: 'normal',
+                fontFamily: getTheme('--text-font'),
+                color: textColor
 
-            ]
+            },
+            axisLabel: {
+                color: textColor,
+            },
         },
         series: [
             {
                 type: 'line',
-                data: values,
-                // data: seriesX.map((x, i) => [x, seriesY[i]]),
+                data: dates.map((date, i) => [date, values[i]]),
+                showSymbol: false,
             }
         ],
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            backgroundColor: getTheme('--color-surface'),
+            axisPointer: {
+                type: 'line',
+            },
+            textStyle: {
+                fontSize: 12,
+                fontWeight: 'normal',
+                fontFamily: getTheme('--text-font'),
+                color: textColor
+            }
+        },
+        toolbox: {
+            show: false
         }
     };
 
@@ -81,7 +140,7 @@ function ChartContainer() {
         }
         })
         .then(response => {
-            console.log(`Recieved Data: ${response.data}`)
+            console.log(`Recieved Data: ${response.data.headers} with ${response.data.data.observations.length} observations.`);
             setData(response.data);
 
             const dates = response.data.data.observations.map(obs => obs.date)
@@ -91,7 +150,9 @@ function ChartContainer() {
             setValues(values);
             setTitle(response.data.headers.seriess.title);
 
+            
             setHasData(true);
+            console.log(`Data has been set.`);
         })
         .catch(error => {
             console.error(error);
@@ -145,12 +206,16 @@ function ChartContainer() {
             </div>
         </div>
         <div className="flex justify-center minw-4/5">
-            {hasData &&
+            {hasData ?
                 <ReactECharts
                     ref={chartRef}
                     option={options}
                     style={{width: "100%", height: "500px"}}
                 />
+                :
+                <div className="flex justify-center items-center minh-500px">
+                    <p className="text-text-primary">No data to display. Please enter a valid FRED Series ID and date range.</p>
+                </div>
             }
         </div>
     </div>

@@ -13,7 +13,7 @@
  * 
  */
 export default function QuickDateChangeButton(
-    { className="", variant = "one_year", ...props}
+    { className="", variant = "one_year", chartRef, ...props}
 ) {
     const variants = {
         one_month: "1mo",
@@ -23,13 +23,58 @@ export default function QuickDateChangeButton(
         max: "Max"
     }
 
+    const RANGE_MONTHS = {
+        one_month: 1,
+        one_year: 12,
+        five_year: 60,
+        ten_year: 120,
+        max: null
+    }
+
+    function getStartDate(variant) {
+        const end = new Date();
+        const start = new Date();
+
+        if (variant === 'max') {
+            start.setTime(Date.parse('1776-07-04'));
+            return ({ startValue: start, endValue: end });
+        }
+
+        start.setMonth(start.getMonth() - RANGE_MONTHS[variant]);
+
+        // console.log(`Calculated start date for variant ${variant}: ${start.toISOString().split('T')[0]}`);
+        
+        
+        return { startValue: start, endValue: end };
+
+    }
+
+
     return(
         <button
             className={`
                 text-text-primary
+                disabled:cursor-not-allowed
+                px-2 py-2 rounded-md
+                hover:bg-accent hover:text-text-on-accent
+                transition-colors duration-300
+                theme-transition
                 ${className}    
             `}
             {...props}
+            onClick={() => {
+                if (chartRef.current) {
+                    const chartInstance = chartRef.current.getEchartsInstance();
+                    // console.log(`Chart instance obtained:`, chartInstance);
+                    const { startValue, endValue } = getStartDate(variant);
+                    console.log(`Dispatching dataZoom action for variant: ${variant}`);
+                    chartInstance.dispatchAction({
+                        type: 'dataZoom',
+                        startValue: startValue,
+                        endValue: endValue
+                    })
+                }
+            }}
         >{`${variants[variant]}`}</button>
     )
 }

@@ -53,6 +53,7 @@
   --color-negative: var(--color-negative);
   --color-tertiary: var(--color-tertiary);
   --color-accent: var(--color-accent);
+  --text-font: var(--sans-serif);
 }
 
 .theme-transition {
@@ -98,7 +99,6 @@ body {
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
