@@ -11,7 +11,6 @@ function getTheme(varName) {
     if(!style) {
         console.warn(`Theme color ${varName} is not defined.`);
     }
-    console.log(`Theme color is: ${style}`);
     return style;
 }
 
@@ -50,7 +49,7 @@ function ChartContainer() {
             textStyle: {
                 fontSize: 20,
                 fontWeight: 'normal',
-                fontFamily: getTheme('--text-font'),
+                // fontFamily: getTheme('--text-font'),
                 color: textColor
             },
             padding: 5,
@@ -63,7 +62,7 @@ function ChartContainer() {
             backgroundcolor: '',
             opacity: 1,
             borderWidth: 1,
-            borderColor: getTheme('--border'),
+            // borderColor: getTheme('--border'),
             show: true,
             coordinateSystem: 'cartesian2d',
         },
@@ -96,7 +95,7 @@ function ChartContainer() {
             nameTextStyle: {
                 fontSize: 14,
                 fontWeight: 'normal',
-                fontFamily: getTheme('--text-font'),
+                // fontFamily: getTheme('--text-font'),
                 color: textColor
 
             },
@@ -120,7 +119,7 @@ function ChartContainer() {
             textStyle: {
                 fontSize: 12,
                 fontWeight: 'normal',
-                fontFamily: getTheme('--text-font'),
+                // fontFamily: getTheme('--text-font'),
                 color: textColor
             }
         },

@@ -1,4 +1,5 @@
 import ChartContainer from "../ChartComponents/ChartContainer";
+import YieldSpreadComp from "./YieldSpreadComp";
 
 
 function Bonds() {
@@ -7,7 +8,14 @@ function Bonds() {
         <>
             <h1>Bonds Page!</h1>
             <div>
-                <h2>Bond yield spread</h2>
+                <h2>US Treasury Securities</h2>
+                <div className="flex flex-row gap-2 justify-center">
+                    <YieldSpreadComp variant="one_month"/>
+                    <YieldSpreadComp variant="one_year"/>
+                    <YieldSpreadComp variant="five_year"/>
+                    <YieldSpreadComp variant="ten_year"/>
+                    <YieldSpreadComp variant="twenty_year"/>
+                </div>
             </div>
             <div>
                 <h2>FED Watch</h2>
