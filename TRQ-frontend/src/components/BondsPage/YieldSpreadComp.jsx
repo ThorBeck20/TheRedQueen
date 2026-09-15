@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
@@ -14,7 +14,7 @@ function yieldChangeColor(yieldChange) {
 
     // Change this one depending on what timeframe I am working in.
     const intensity = Math.min(Math.abs(yieldChange) * 4, 1);
-    console.log(`Yield Change ${yieldChange}: Intensity ${intensity}`);
+    // console.log(`Yield Change ${yieldChange}: Intensity ${intensity}`);
     const [r, g, b] = yieldChange > 0
         ? interpolate([127, 150, 127], [127, 255, 127], intensity)
         : interpolate([150, 127, 127], [255, 127, 127], intensity);
@@ -78,7 +78,6 @@ function YieldSpreadComp({ className="", variant="one_month", ...props }) {
             const observations = response.data.data.observations;
             setYieldChange(getYieldChange(observations));
             const yieldPct = observations[observations.length-1].value;
-            console.log(typeof yieldPct);
 
             setYieldPct(parseFloat(yieldPct));
             setLoaded(true);
@@ -153,15 +152,13 @@ function YieldSpreadComp({ className="", variant="one_month", ...props }) {
                             }
                         }
                         {...props}>
-                    <div className="flex justify-center items-stretch">
+                    <div className="flex justify-center">
                         <div className="
                             w-6 h-6 border-3 border-gray-300
                             border-t-current rounded-full animate-spin
                             mt-10
                             "/>
                     </div>
-
-
                 </div>
             }
         </>

@@ -2,7 +2,7 @@ import httpx
 from core.config import settings
 
 '''
-    Remember to read the terms of service and follow instructions.
+    TODO: Remember to read the terms of service and follow instructions.
     For example, remember to include the following statement:
       "This product uses the FRED® API but is not endorsed or certified by the
       Federal Reserve Bank of St. Louis."

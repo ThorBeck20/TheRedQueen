@@ -1,5 +1,6 @@
 import ChartContainer from "../ChartComponents/ChartContainer";
 import YieldSpreadComp from "./YieldSpreadComp";
+import EventsPreview from "../PolyMarketComponents/EventsPreview";
 
 
 function Bonds() {
@@ -19,7 +20,17 @@ function Bonds() {
             </div>
             <div>
                 <h2>FED Watch</h2>
-                <h3>Next FOMC meeting</h3>
+                <div>
+                    {/* <link to="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html">
+                        CME FED Watch Tool
+                    </link> */}
+                </div>
+                <div className="flex flex-row justify-center gap-4">
+                    <div className="bg-surface-raised rounded-md p-2 theme-transition">
+                        <h2 className="text-primary">FOMC Schedule</h2>
+                    </div>
+                    <EventsPreview slug="usfed-fomc-2026-09-16"/>
+                </div>
                 <h3>Future predictions according to CME</h3>
             </div>
             <div>

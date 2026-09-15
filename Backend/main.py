@@ -1,4 +1,5 @@
 from routers import bonds
+from routers import polymarket
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -13,6 +14,7 @@ app.add_middleware(
 )
 
 app.include_router(bonds.router)
+app.include_router(polymarket.router)
 
 
 @app.get("/health")
