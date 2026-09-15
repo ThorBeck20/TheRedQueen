@@ -62,6 +62,11 @@ export default function QuickDateChangeButton(
                 ${className}    
             `}
             {...props}
+            style={
+                {
+                    cursor: "pointer"
+                }
+            }
             onClick={() => {
                 if (chartRef.current) {
                     const chartInstance = chartRef.current.getEchartsInstance();
