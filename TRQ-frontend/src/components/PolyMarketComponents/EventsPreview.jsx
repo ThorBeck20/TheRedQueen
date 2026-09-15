@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import PMMarketSides from './PMMarketSides';
 import polyMarketIconWhite from '../../assets/icon-white.svg';
-import polyMarketIconBlack from '../../assets/icon-black.svg'
 import axios from 'axios';
 
 function EventsPreview({ className="", slug, ...props}) {
 
     const [title, setTitle] = useState("");
-    const [image, setImage] = useState("");
     const [markets, setMarkets] = useState();
 
     const [loaded, setLoaded] = useState(false);
@@ -17,7 +15,6 @@ function EventsPreview({ className="", slug, ...props}) {
         ).then((response) => {
             setMarkets(response.data.event.markets);
             setTitle(response.data.event.title);
-            setImage(response.data.event.image);
             setLoaded(true);
         })
     }, [slug]);

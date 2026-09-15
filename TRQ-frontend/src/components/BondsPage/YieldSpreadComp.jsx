@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import YieldChangeComponent from './YieldChangeComponent';
 
 
 function interpolate(start, end, t) {
@@ -13,7 +14,7 @@ function yieldChangeColor(yieldChange) {
     }
 
     // Change this one depending on what timeframe I am working in.
-    const intensity = Math.min(Math.abs(yieldChange) * 4, 1);
+    const intensity = Math.min(Math.abs(yieldChange) * 30, 1);
     // console.log(`Yield Change ${yieldChange}: Intensity ${intensity}`);
     const [r, g, b] = yieldChange > 0
         ? interpolate([127, 150, 127], [127, 255, 127], intensity)
@@ -44,10 +45,9 @@ function one_month_ago() {
     // console.log(`one month ago ${one_month_ago}`);
 }
 
-function getYieldChange(obData) {
-    const stVal = obData[0].value;
+function getYieldChangeDaily(obData) {
+    const stVal = obData[obData.length-2].value;
     const endVal = obData[obData.length-1].value;
-    // console.log(`Bam! Yield Change is ${endVal - stVal}`);
     return endVal - stVal;
 }
 
@@ -56,10 +56,13 @@ function getYieldChange(obData) {
  * between a couple bond maturities. It's background color changes based off of
  * the change in yield in the past [timeframe]. The button pulls launches a
  * CharContainer component that displays the yield spread over time.
+ * 
+ * TODO: Add a last updated display and make this prettier
  */
 function YieldSpreadComp({ className="", variant="one_month", ...props }) {
     const [yieldPct, setYieldPct] = useState();
-    const [yieldChange, setYieldChange] = useState();
+    const [yieldChangeDay, setyieldChangeDay] = useState();
+    const [obData, setObData] = useState();
 
     const [loaded, setLoaded] = useState(false);
 
@@ -76,7 +79,8 @@ function YieldSpreadComp({ className="", variant="one_month", ...props }) {
             }
         }).then((response) => {
             const observations = response.data.data.observations;
-            setYieldChange(getYieldChange(observations));
+            setyieldChangeDay(getYieldChangeDaily(observations));
+            setObData(observations);
             const yieldPct = observations[observations.length-1].value;
 
             setYieldPct(parseFloat(yieldPct));
@@ -101,7 +105,7 @@ function YieldSpreadComp({ className="", variant="one_month", ...props }) {
                         `}
                         style={
                             { 
-                                backgroundColor: yieldChangeColor(yieldChange),
+                                backgroundColor: yieldChangeColor(yieldChangeDay),
                                 cursor: "pointer",
                             }
                         }
@@ -122,17 +126,23 @@ function YieldSpreadComp({ className="", variant="one_month", ...props }) {
                                 shadow-md shadow-gray-500/50
                                 hover:shadow-lg hover:shadow-gray-500/50
                             ">
+                                <ul className="flex flex-row gap-3">
+                                    <YieldChangeComponent data={obData} variant={"monthly"}/>
+                                    <YieldChangeComponent data={obData} variant={"weekly"}/>
+                                    <YieldChangeComponent data={obData} variant={"daily"}/>
+                                </ul>
+                                {/* Month
                                 {
-                                    yieldChange > 0 ? (
+                                    yieldChangeMonth > 0 ? (
                                         <h3 className="
                                             text-green-500
-                                        ">+{yieldChange.toFixed(3)}%</h3>
+                                        ">+{yieldChangeMonth.toFixed(3)}%</h3>
                                     ) : (
                                         <h3 className="
                                             text-red-500
-                                        ">{yieldChange.toFixed(3)}%</h3>
+                                        ">{yieldChangeMonth.toFixed(3)}%</h3>
                                     )
-                                }
+                                } */}
                             </div>
                         </div>
                     </button>
@@ -147,7 +157,7 @@ function YieldSpreadComp({ className="", variant="one_month", ...props }) {
                         `}
                         style={
                             { 
-                                backgroundColor: yieldChangeColor(yieldChange),
+                                backgroundColor: yieldChangeColor(yieldChangeDay),
                                 cursor: "pointer",
                             }
                         }
